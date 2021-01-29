@@ -1,0 +1,85 @@
+
+<h3 style="text-align: center;"> Articles </h3>
+
+<div class="my-3" *ngIf="articles.length > 0">
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Country</th>
+                <th>Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let article of articles">
+                <td>{{ article.date.toDate() | date }}</td>
+                <td>{{ article.country }}</td>
+                <td>{{ article.description }}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="row">
+    
+    <div class="col-sm-6 text-center"> 
+        <button class="btn btn-danger" (click)="mycovidService.beEligibleOnOff()">Eligibility ON/OFF</button>
+    </div>
+
+</div>
+ 
+<form (ngSubmit)="addArticle()" *ngIf="user.isEligible">
+
+    <div class="row mb-3">
+
+        <div class="col-md-6">
+
+            <label for="dateInput"> Date </label>
+            <input type="date" 
+                    id="dateInput"
+                    name="dateInput"
+                    class="form-control" 
+                    [(ngModel)]="date"
+                    required
+                    /> 
+
+        </div>
+
+        <div class="col-md-6">
+
+            <label for="country"> Country or Worldwide </label>
+            <input type="countryInput"
+                id="country"
+                name="countryInput"
+                class="form-control"
+                placeholder="Country or Worldwide ?"
+                [(ngModel)]="country"
+                required
+                />
+            
+        </div>
+
+    </div>
+
+    <div class="row mb-3">
+
+        <div class="col-12">
+
+            <label for="description"> Description </label>
+            <input type="text"
+                    id="descriptionInput"
+                    name="descriptionInput"
+                    class="form-control"
+                    placeholder="What do you want to write ?"
+                    [(ngModel)]="description"
+                    required
+                    />
+
+        </div>
+
+    </div>
+
+    <button class="btn btn-primary"> Add </button>
+
+</form>
+    

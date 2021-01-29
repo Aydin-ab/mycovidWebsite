@@ -1,0 +1,240 @@
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.1/css/all.css" crossorigin="anonymous">
+<header>
+    <div class="row">
+    
+        <div class="col-sm-6"> 
+            <h3> Hello {{ user!.displayName }} </h3>
+        </div>
+        <div class="col-sm-6 text-right"> 
+            <button class="btn btn-danger" (click)="mycovidService.signOut()">Sign out</button>
+        </div>
+    
+    </div>
+    
+    <div style="text-align:center">
+
+        <img
+        style="width: 20%; padding: 10px; vertical-align:middle" 
+        src="https://firebasestorage.googleapis.com/v0/b/mycovid-f8539.appspot.com/o/logo.png?alt=media&token=070ef95e-f038-4ca7-9a2c-5df505e349db" 
+        alt="logo"
+        /> 
+        <b>COVID-19</b>
+        <br>
+        <h5 class="text-secondary">Live Updates and Statistics</h5>
+    </div>
+
+</header>
+
+
+
+
+<div class="my-3">
+    <div style="padding: 10px;">
+        <div class="row" style="background-color: rgb(212, 206, 206);">
+
+            <div style="padding: 10px;">
+                Corona Virus Summary Worldwide
+            </div>    
+        </div>
+    </div>
+    <table class="table table-bordered table-striped">
+
+        <tbody>
+            <tr style="background-color: yellow">
+                <td>Total Cases</td>
+                <td style="text-align: right;">{{ formatNumber(mycovidService.totalCase) }}</td>
+            </tr>
+            <tr style="background-color: yellow">
+                <td>New Cases</td>
+                <td style="text-align: right;">{{ formatNumber(mycovidService.dataGlobal.Global.NewConfirmed) }}</td>
+            </tr>
+            <tr style="background-color: yellow">
+                <td>Active Cases</td>
+                <td style="text-align: right;">{{ formatNumber(mycovidService.dataGlobal.Global.TotalConfirmed) }}</td>
+            </tr>
+
+            <tr style="background-color: blue">
+                <td>Total Recovered</td>
+                <td style="text-align: right;">{{ formatNumber(mycovidService.dataGlobal.Global.TotalRecovered) }}</td>
+            </tr>
+            <tr style="background-color: blue">
+                <td>New Recovered</td>
+                <td style="text-align: right;">{{ formatNumber(mycovidService.dataGlobal.Global.NewRecovered) }}</td>
+            </tr>
+            <tr style="background-color: blue">
+                <td>Recovery Rate</td>
+                <td style="text-align: right;"> {{ mycovidService.recoveryRate }} %</td>
+            </tr>
+
+            <tr style="background-color: red">
+                <td>Total Deaths</td>
+                <td style="text-align: right;">{{ formatNumber(mycovidService.dataGlobal.Global.TotalDeaths) }}</td>
+            </tr>
+            <tr style="background-color: red">
+                <td>New Deaths</td>
+                <td style="text-align: right;">{{ formatNumber(mycovidService.dataGlobal.Global.NewDeaths) }}</td>
+            </tr>
+            <tr style="background-color: red">
+                <td>Mortality Rate</td>
+                <td style="text-align: right;">{{ mycovidService.mortalityRate }} %</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<div style="margin-top: 100px;">
+
+    <div style="padding: 10px;">
+        <div class="row" style="background-color: rgb(212, 206, 206);">
+
+            <div style="padding: 10px;">
+                Corona Virus Cases Distribution Worldwide
+            </div>    
+        </div>
+    </div>
+
+    <div class="chart-wrapper">
+        <canvas baseChart 
+        [data]="mycovidService.pieChartData" 
+        [labels]="mycovidService.pieChartLabels" 
+        [chartType]="mycovidService.pieChartType"
+        [options]="mycovidService.pieChartOptions"
+        [plugins]="mycovidService.pieChartPlugins"
+        [legend]="mycovidService.pieChartLegend"
+        >
+        </canvas>
+    </div>
+
+</div>
+
+
+<div style="margin-top: 100px;">
+
+    <div style="padding: 10px;">
+        <div class="row" style="background-color: rgb(212, 206, 206);">
+
+            <div style="padding: 10px;">
+                Daily Corona Virus Cases Worldwide
+            </div>    
+        </div>
+    </div>
+
+    <div style="display: block">
+        <canvas baseChart
+                [datasets]="mycovidService.barChartData"
+                [labels]="mycovidService.barChartLabels"
+                [options]="mycovidService.barChartOptions"
+                [legend]="mycovidService.barChartLegend"
+                [chartType]="mycovidService.barChartType">
+        </canvas>
+    </div>
+
+</div>
+
+<div style="margin-top: 100px;">
+
+    <div style="padding: 10px;">
+        <div class="row" style="background-color: rgb(212, 206, 206);">
+
+            <div style="padding: 10px;">
+                Total Corona Virus Cases Worldwide
+            </div>    
+        </div>
+    </div>
+
+        <canvas
+            baseChart
+            [chartType]="'line'"
+            [datasets]="mycovidService.chartLineData"
+            [labels]="mycovidService.chartLineLabels"
+            [options]="mycovidService.chartLineOptions"
+            [legend]="true"
+            >
+        </canvas>
+
+</div>
+
+
+
+<div style="margin-top: 100px;">
+
+    <div style="padding: 10px;">
+        <div class="row" style="background-color: rgb(212, 206, 206);">
+
+            <div style="padding: 10px;">
+                Corona Virus Cases By Country
+            </div>    
+        </div>
+    </div>
+
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th style="background-color: rgb(87, 85, 85); text-align: center;"> 
+                    Country  
+                    <button class="btn" (click)="mycovidService.getData(0)"><i class="fa fa-angle-up"></i></button>
+                    <button class="btn" (click)="mycovidService.getData(1)"><i class="fa fa-angle-down"></i></button>
+                </th>
+                <th style="background-color: rgb(255, 208, 0); text-align: center;"> 
+                    New Cases
+                    <button class="btn" (click)="mycovidService.getData(2)"><i class="fa fa-angle-up"></i></button>
+                    <button class="btn" (click)="mycovidService.getData(3)"><i class="fa fa-angle-down"></i></button>
+                </th>
+                <th style="background-color: rgb(255, 208, 0); text-align: center;"> 
+                    Total Cases 
+                    <button class="btn" (click)="mycovidService.getData(4)"><i class="fa fa-angle-up"></i></button>
+                    <button class="btn" (click)="mycovidService.getData(5)"><i class="fa fa-angle-down"></i></button>
+                </th>
+                <th style="background-color: rgb(0, 183, 255); text-align: center;"> 
+                    New Recoveries
+                    <button class="btn" (click)="mycovidService.getData(6)"><i class="fa fa-angle-up"></i></button>
+                    <button class="btn" (click)="mycovidService.getData(7)"><i class="fa fa-angle-down"></i></button>
+                 </th>
+                <th style="background-color: rgb(0, 183, 255); text-align: center;"> 
+                    Total Recoveries
+                    <button class="btn" (click)="mycovidService.getData(8)"><i class="fa fa-angle-up"></i></button>
+                    <button class="btn" (click)="mycovidService.getData(9)"><i class="fa fa-angle-down"></i></button>
+                 </th>
+                <th style="background-color: rgb(238, 44, 173); text-align: center;"> 
+                    New Deaths
+                    <button class="btn" (click)="mycovidService.getData(10)"><i class="fa fa-angle-up"></i></button>
+                    <button class="btn" (click)="mycovidService.getData(11)"><i class="fa fa-angle-down"></i></button>
+                 </th>
+                <th style="background-color: rgb(238, 44, 173); text-align: center;"> 
+                    Total Deaths
+                    <button class="btn" (click)="mycovidService.getData(12)"><i class="fa fa-angle-up"></i></button>
+                    <button class="btn" (click)="mycovidService.getData(13)"><i class="fa fa-angle-down"></i></button>
+                 </th>
+            </tr>
+        </thead>
+        <tbody style="margin-top: 1px;">
+            <tr *ngFor="let country of mycovidService.dataCountries">
+                
+                <td style="background-color: rgb(87, 85, 85); text-align: left; cursor: pointer;" (click)="mycovidService.goToCountry(country.Country)"> {{ country.Country }} </td>
+                <td style="background-color: rgb(255, 208, 0); text-align: right;" > {{ formatNumber(country.NewConfirmed) }} </td>
+                <td style="background-color: rgb(255, 208, 0); text-align: right;"> {{ formatNumber(country.TotalConfirmed) }} </td>
+                <td style="background-color: rgb(0, 183, 255); text-align: right;"> {{ formatNumber(country.NewRecovered) }} </td>
+                <td style="background-color: rgb(0, 183, 255); text-align: right;"> {{ formatNumber(country.TotalRecovered) }} </td>
+                <td style="background-color: rgb(238, 44, 173); text-align: right;"> {{ formatNumber(country.NewDeaths) }} </td>
+                <td style="background-color: rgb(238, 44, 173); text-align: right;"> {{ formatNumber(country.TotalDeaths) }} </td>
+
+            </tr>
+        </tbody>
+    </table>
+
+</div>
+
+
+<app-articles></app-articles>
+
+
+<footer>
+    <div style="padding: 10px;">
+        <div class="row justify-content-center" style="background-color: rgb(212, 206, 206);">
+
+            <div style="padding: 10px;">
+                Data source : <a href="https://covid19api.com">COVID-19 API / Johns Hopkins CSSE</a>
+            </div>    
+        </div>
+    </div>
+</footer>

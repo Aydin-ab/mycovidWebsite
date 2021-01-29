@@ -25,12 +25,17 @@
             "aot": true,
             "assets": [
               "src/favicon.ico",
-              "src/assets"
+              "src/asset  s"
             ],
             "styles": [
-              "src/styles.css"
+              "src/styles.css",
+              "node_modules/bootstrap/dist/css/bootstrap.min.css"
             ],
-            "scripts": []
+            "scripts": [
+              "node_modules/jquery/dist/jquery.min.js",
+              "node_modules/bootstrap/dist/js/bootstrap.min.js",
+              "node_modules/chart.js/dist/Chart.bundle.min.js"
+            ]
           },
           "configurations": {
             "production": {
@@ -50,8 +55,8 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "500kb",
-                  "maximumError": "1mb"
+                  "maximumWarning": "4mb",  
+                  "maximumError": "4mb"
                 },
                 {
                   "type": "anyComponentStyle",
@@ -124,5 +129,8 @@
       }
     }
   },
-  "defaultProject": "mycovid"
+  "defaultProject": "mycovid",
+  "cli": {
+    "analytics": "8eae637a-ca3a-4c17-8fb6-90e4ffff4b4a"
+  }
 }
